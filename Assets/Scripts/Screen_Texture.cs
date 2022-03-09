@@ -12,15 +12,13 @@ public class Screen_Texture : MonoBehaviour
     {
         
 		screen = GameObject.Find("Screen");
-		Renderer renderer = GetComponent<Renderer>();
+		Renderer renderer = screen.GetComponent<Renderer>();
 		
         WebCamDevice[] devices = WebCamTexture.devices;
-		Debug.Log( "List webcams:" );
-		for( int i=0; i<devices.Length; i++ ) {
-			Debug.Log( devices[i].name );
-		}
 		
-		Debug.Log("----");
+		for( int i=0; i<devices.Length; i++ ) {
+			Debug.Log( "Webcam: " + devices[i].name );
+		}
 		
 		string webCamDeviceName = devices[0].name;
 		
