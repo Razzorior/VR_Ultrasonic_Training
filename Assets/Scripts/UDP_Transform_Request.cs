@@ -10,7 +10,8 @@ public class UDP_Transform_Request : MonoBehaviour
 {
     public GameObject cube;
 	
-	public Vector3 offset = new Vector3( 0.0f, 0.0f, 0.0f );
+	public Vector3 positionOffset = new Vector3( 0.0f, 0.0f, 0.0f );
+	public Vector3 rotationOffset = new Vector3( 0.0f, 0.0f, 0.0f );
 	
 	public String ipAdress = "127.0.0.1";
 	public int portNumber = 4246;
@@ -47,16 +48,17 @@ public class UDP_Transform_Request : MonoBehaviour
 				
 				Debug.Log( returnData );
 							
-				float posX = Convert.ToSingle(posiitonsAndRotations[1]);
-				float posY = Convert.ToSingle(posiitonsAndRotations[2]);
-				float posZ = Convert.ToSingle(posiitonsAndRotations[3]);
+				float posZ = Convert.ToSingle(posiitonsAndRotations[1]) / 100;
+				float posX = Convert.ToSingle(posiitonsAndRotations[2]) / 100;
+				float posY = Convert.ToSingle(posiitonsAndRotations[3]) / 100;
 				
-				float rotX = Convert.ToSingle(posiitonsAndRotations[4]);
-				float rotY = Convert.ToSingle(posiitonsAndRotations[5]);
-				float rotZ = Convert.ToSingle(posiitonsAndRotations[6]);
+				float rotZ = Convert.ToSingle(posiitonsAndRotations[4]);
+				float rotX = Convert.ToSingle(posiitonsAndRotations[5]);
+				float rotY = Convert.ToSingle(posiitonsAndRotations[6]);
 				
-				cube.transform.eulerAngles = new Vector3(rotX,rotY,rotZ);
-				cube.transform.position = new Vector3(posX,posY,posZ) + offset;
+				cube.transform.rotation = Quaternion.Euler(rotX, rotY, rotZ) * Quaternion.Euler(rotationOffset);
+				//cube.transform.eulerAngles = new Vector3(rotX,rotY,rotZ);
+				cube.transform.position = new Vector3(-posX,-posY,-posZ) + positionOffset;
 			
 			}
 
