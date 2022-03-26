@@ -89,7 +89,7 @@ namespace ManusVR.Core.Utilities
 
         protected void FollowRotation()
         {
-            Quaternion targetTransformRotation = transformToFollow.rotation * Quaternion.Euler(rotationOffset);
+            Quaternion targetTransformRotation = transformToFollow.rotation * rotationQuat;
             Quaternion newRotation;
 
             if (shouldSmoothPosition)
