@@ -25,7 +25,7 @@ namespace ManusVR.Core.Tracking
         [Tooltip("The positional offset between the left hand and the vive tracker.")]
         public Vector3 leftPositionOffset;
         [Tooltip("The rotational offset between the left hand and the vive tracker.")]
-        public Quaternion leftRotationOffset = Quaternion.identity;
+        public Vector3 leftRotationOffset = Vector3.zero;
         [Tooltip("The positional offset between the right hand and the vive tracker.")]
         public Vector3 rightPositionOffset;
         [Tooltip("The rotational offset between the right hand and the vive tracker.")]
@@ -99,7 +99,7 @@ namespace ManusVR.Core.Tracking
             TransformFollow tFollow;
             if (isLeft)
             {
-                AttachTransformFollow(hand.transform, leftController, leftPositionOffset, leftRotationOffset, out tFollow);
+                AttachTransformFollow(hand.transform, leftController, leftPositionOffset, Quaternion.Euler(leftRotationOffset), out tFollow);
             }
             else
             {
@@ -115,7 +115,7 @@ namespace ManusVR.Core.Tracking
             TransformFollow tFollow;
             if (isLeft)
             {
-                AttachTransformFollow(leftLowerArm, leftController, leftPositionOffset, leftRotationOffset, out tFollow);
+                AttachTransformFollow(leftLowerArm, leftController, leftPositionOffset, Quaternion.Euler(leftRotationOffset), out tFollow);
             }
             else
             {
