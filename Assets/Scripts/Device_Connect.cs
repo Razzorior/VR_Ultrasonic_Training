@@ -72,9 +72,10 @@ public class Device_Connect : MonoBehaviour
         
         json = json.TrimEnd(',');
         json += "]";
+
         
         try {
-			Byte[] sendBytes = Encoding.ASCII.GetBytes("set_" + deviceName + "42" + "_" + json);
+			Byte[] sendBytes = Encoding.ASCII.GetBytes("set___" + deviceName + "___" + json);
 			udpClient.Send(sendBytes, sendBytes.Length);
 
 		} catch (Exception e) {
@@ -87,7 +88,7 @@ public class Device_Connect : MonoBehaviour
         */
         
         try {
-			Byte[] sendBytes = Encoding.ASCII.GetBytes("get_" + deviceName);
+			Byte[] sendBytes = Encoding.ASCII.GetBytes("get___" + deviceName);
 			udpClient.Send(sendBytes, sendBytes.Length);
 
 			if( udpClient.Available > 0 ) {

@@ -25,6 +25,7 @@ public class PlayerHandler : MonoBehaviour
         } 
         else
         {
+            Debug.Log("Ultrasound Player confirmed");
             foreach (Component co in ultrasoundPlayerDeactivations)
             {
                 co.GetComponent<MonoBehaviour>().enabled = false;
