@@ -22,6 +22,8 @@ public class ManageCPR : MonoBehaviour
     private bool usTimerIsRunning = false;
     private float timePassedSinceLastCPRPress = 0f;
     private float totalCPRTime = 0f;
+    private List<float> timePointsOfPresses = new List<float>(); 
+    private float cprPressesPerMinute = 0;
     private Coroutine timerCoroutine;
 
     private void OnCollisionEnter(Collision other)
@@ -94,7 +96,21 @@ public class ManageCPR : MonoBehaviour
             totalCPRTime += Time.deltaTime;
         }
     }
+    IEnumerator CPRPressSpeedAndDepthHandler(float averageDuration)
+    {
+        float totalGameTimePassed = 0f;
 
+        while (true)
+        {
+            totalGameTimePassed += Time.deltaTime;
+
+            if(currentlyApplyingCPR)
+            {
+
+            }
+            yield return null;
+        }
+    }
     IEnumerator UltraSoundTimer()
     {
         int timePassed = 0;
