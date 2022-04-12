@@ -74,7 +74,7 @@ public class Device_Connect : MonoBehaviour
         json += "]";
         
         try {
-			Byte[] sendBytes = Encoding.ASCII.GetBytes("set_" + deviceName + "42" + "_" + json);
+			Byte[] sendBytes = Encoding.ASCII.GetBytes("set_" + deviceName + "_" + json);
 			udpClient.Send(sendBytes, sendBytes.Length);
 
 		} catch (Exception e) {
