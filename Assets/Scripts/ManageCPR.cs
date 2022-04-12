@@ -13,6 +13,7 @@ public class ManageCPR : MonoBehaviour
     public TextMeshProUGUI timerText;
     public GameObject cPRHand;
     public GameObject otherHand;
+    public GameObject chest;
 
     private Vector3 startingPos;
     //private Vector3 otherHandPosOffset = new Vector3();
@@ -96,9 +97,12 @@ public class ManageCPR : MonoBehaviour
             totalCPRTime += Time.deltaTime;
         }
     }
+
     IEnumerator CPRPressSpeedAndDepthHandler(float averageDuration)
     {
         float totalGameTimePassed = 0f;
+        float defaultPosOfChest = chest.transform.localPosition.z;
+        float maxPress = 0f;
 
         while (true)
         {
@@ -106,8 +110,9 @@ public class ManageCPR : MonoBehaviour
 
             if(currentlyApplyingCPR)
             {
-
+                
             }
+
             yield return null;
         }
     }
