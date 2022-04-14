@@ -8,32 +8,35 @@ const server = dgram.createSocket('udp4');
 
 server.on('message', function(msg, senderInfo){
   //console.log('server got message:' + msg);
-  let message = msg.toString();
+  let message = JSON.parse( msg.toString() );
     
-  if(message.includes('get')) {
-      let m = message.split('___');
-      let deviceName = m[1];
+  if(message.type === 'get') {
+      let deviceName = message.device;
       let otherDevice = deviceName === deviceList[0] ? deviceList[1] : deviceList[0];
       
       try {
           
           let sendMessage = '{"objects":[';
+          
           for( const [key,value] of Object.entries(data[otherDevice]) ){
               sendMessage += JSON.stringify(value) + ',';
           }
-          sendMessage = sendMessage.substr(0, sendMessage.length - 1) + ']}';
+          sendMessage = sendMessage.substr(0, sendMessage.length - 1) + '], "timerText": "' + timerText + '", "timerActive":' + timerActive + '}';
           server.send(sendMessage,senderInfo.port,senderInfo.address);
           
       } catch(e) {
-          
+          console.log(e)
       }
 
   
-  } else if(message.includes('set')){
+  } else if(message.type === 'set'){
       
-      let m = message.split('___');
-      let deviceName = m[1];
-      let array = JSON.parse(m[2]);
+      let deviceName = message.device;
+      
+      if(message.timerText) timerText = message.timerText;
+      if(message.timerActive) timerActive = message.timerActive;
+      
+      let array = message.objects;
       
       if(!data[deviceName]){
           deviceList.push(deviceName);
@@ -54,7 +57,7 @@ server.on('listening', function(){
 });
 
 setInterval( () => {
-    console.log(data)
+    console.log(data, timerText, timerActive)
 }, 1000) 
 
 server.bind({

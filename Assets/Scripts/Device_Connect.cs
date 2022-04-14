@@ -67,7 +67,7 @@ public class Device_Connect : MonoBehaviour
             Send object transform to UDP server
         */
         
-        string json = "[";
+        string json = "{\"type\":\"set\", \"device\": \"" + deviceName + "\", \"objects\": [";
                 
         sendTransform.ForEach(delegate(GameObject go)
         {
@@ -80,10 +80,16 @@ public class Device_Connect : MonoBehaviour
         
         json = json.TrimEnd(',');
         json += "]";
-
+        
+        if(CPRPlayer){
+           json += ",\"timerText\":\"" + timerText.text + "\"";
+           json += ",\"timerActive\":" + "false";
+        }
+        
+        json += "}";
         
         try {
-			Byte[] sendBytes = Encoding.ASCII.GetBytes("set___" + deviceName + "___" + json);
+			Byte[] sendBytes = Encoding.ASCII.GetBytes(json);
 
 			udpClient.Send(sendBytes, sendBytes.Length);
 
@@ -97,7 +103,7 @@ public class Device_Connect : MonoBehaviour
         */
         
         try {
-			Byte[] sendBytes = Encoding.ASCII.GetBytes("get___" + deviceName);
+			Byte[] sendBytes = Encoding.ASCII.GetBytes("{\"type\":\"get\", \"device\": \"" + deviceName + "\"}");
 			udpClient.Send(sendBytes, sendBytes.Length);
 
 			if( udpClient.Available > 0 ) {
@@ -106,6 +112,10 @@ public class Device_Connect : MonoBehaviour
 				
                 JSONList<PositionRotationJSON> list = JsonUtility.FromJson<JSONList<PositionRotationJSON>>(returnData);
 				
+                if(!CPRPlayer && timerText.text != list.timerText){
+                    timerText.text = list.timerText;
+                }
+                
                 foreach (PositionRotationJSON posRot in list.objects)
                 {
                     GameObject obj = retrieveTransform.Find( o => o.name == posRot.name );
