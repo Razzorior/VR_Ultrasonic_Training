@@ -5,6 +5,7 @@ using System;
 using System.Text;
 using System.Net;
 using System.Net.Sockets;
+using TMPro;
 
 [Serializable]
 public class PositionRotationJSON
@@ -18,6 +19,8 @@ public class PositionRotationJSON
 public class JSONList<PositionRotationJSON>
 {
     public PositionRotationJSON[] objects;
+    public string timerText;
+    public bool timerActive;
 }
 
 public class Device_Connect : MonoBehaviour
@@ -32,12 +35,17 @@ public class Device_Connect : MonoBehaviour
     
     public List<GameObject> retrieveTransform = new List<GameObject>();
     public List<GameObject> sendTransform = new List<GameObject>();
+    
+    public bool CPRPlayer = true;
+    public TextMeshProUGUI timerText;
     	
     // Start is called before the first frame update
     void Start()
     {
 		
         deviceName = SystemInfo.deviceName;
+        
+        timerText = GameObject.Find("TimerText").GetComponent<TextMeshProUGUI>();
      
         udpClient = new UdpClient();
 				
@@ -49,7 +57,7 @@ public class Device_Connect : MonoBehaviour
 		} catch (Exception e) {
 			Debug.Log(e.ToString());
 		}
-             
+                     
     }
 
     // Update is called once per frame
