@@ -28,6 +28,8 @@ public class Device_Connect : MonoBehaviour
 	
     string deviceName;
     bool CPRPlayer = true;
+    AudioSource metronome;
+    ManageCPR manageCPR;
 
     public String ipAdress = "127.0.0.1";
 	public int portNumber = 4000;
@@ -45,7 +47,11 @@ public class Device_Connect : MonoBehaviour
     {
 		
         deviceName = SystemInfo.deviceName;
+        
         CPRPlayer = GameObject.Find("ConnectionManager").GetComponent<PlayerHandler>().CPRPlayer;
+        
+        manageCPR = GameObject.Find("riggedbareman:mixamorig:Spine2").GetComponent<ManageCPR>();
+        metronome = manageCPR.metronome;
         
         timerText = GameObject.Find("TimerText").GetComponent<TextMeshProUGUI>();
      
@@ -84,8 +90,14 @@ public class Device_Connect : MonoBehaviour
         json += "]";
         
         if(CPRPlayer){
+           string boolAsString = "";
+           if(manageCPR.currentlyApplyingCPR){
+               boolAsString = "true";
+           } else {
+               boolAsString = "false";
+           }
            json += ",\"timerText\":\"" + timerText.text + "\"";
-           json += ",\"timerActive\":" + "false";
+           json += ",\"timerActive\":" + boolAsString;
         }
         
         json += "}";
@@ -116,6 +128,13 @@ public class Device_Connect : MonoBehaviour
 				
                 if(!CPRPlayer && timerText.text != list.timerText){
                     timerText.text = list.timerText;
+                }
+                
+                if(!CPRPlayer && metronome.isPlaying != list.timerActive && metronome.isPlaying){
+                    metronome.Stop();
+                }
+                if(!CPRPlayer && metronome.isPlaying != list.timerActive && !metronome.isPlaying){
+                    metronome.Play();
                 }
                 
                 foreach (PositionRotationJSON posRot in list.objects)

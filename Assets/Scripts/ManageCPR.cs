@@ -18,7 +18,7 @@ public class ManageCPR : MonoBehaviour
     private Vector3 startingPos;
     //private Vector3 otherHandPosOffset = new Vector3();
     //private Vector3 otherHandRotOffset = new Vector3();
-    private bool currentlyApplyingCPR = false;
+    public bool currentlyApplyingCPR = false;
     private int currentlyColliding = 0;
     private bool usTimerIsRunning = false;
     private float timePassedSinceLastCPRPress = 0f;
