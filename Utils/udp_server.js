@@ -1,5 +1,7 @@
 let data = {};
-let deviceNames = [];
+let deviceList = [];
+let timerText = '';
+let timerActive = false;
 
 const dgram = require('dgram');
 const server = dgram.createSocket('udp4');
@@ -9,32 +11,38 @@ server.on('message', function(msg, senderInfo){
   let message = msg.toString();
     
   if(message.includes('get')) {
-      let m = message.split('_');
+      let m = message.split('___');
       let deviceName = m[1];
-      let name = deviceName === deviceNames[0] ? deviceName[1] : deviceName[0];
-	  let sendMessage = '{"objects":[';//JSON.stringify(data);
-      for( const [key,value] of Object.entries(data[name]) ){
-          sendMessage += JSON.stringify(value) + ',';
+      let otherDevice = deviceName === deviceList[0] ? deviceList[1] : deviceList[0];
+      
+      try {
+          
+          let sendMessage = '{"objects":[';
+          for( const [key,value] of Object.entries(data[otherDevice]) ){
+              sendMessage += JSON.stringify(value) + ',';
+          }
+          sendMessage = sendMessage.substr(0, sendMessage.length - 1) + ']}';
+          server.send(sendMessage,senderInfo.port,senderInfo.address);
+          
+      } catch(e) {
+          
       }
-      sendMessage = sendMessage.substr(0, sendMessage.length - 1) + ']}';
-	  server.send(sendMessage,senderInfo.port,senderInfo.address);
+
   
   } else if(message.includes('set')){
       
-      let m = message.split('_');
+      let m = message.split('___');
       let deviceName = m[1];
       let array = JSON.parse(m[2]);
       
       if(!data[deviceName]){
-          deviceNames.push(deviceName);
+          deviceList.push(deviceName);
           data[deviceName] = {};
       }
       
       array.forEach( (obj) => {
           data[deviceName][obj.name] = obj;
       });
-      
-      console.log(data);
       
   }
   
