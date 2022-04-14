@@ -27,6 +27,8 @@ public class Device_Connect : MonoBehaviour
 {
 	
     string deviceName;
+    bool CPRPlayer = true;
+
     public String ipAdress = "127.0.0.1";
 	public int portNumber = 4000;
 	
@@ -36,14 +38,14 @@ public class Device_Connect : MonoBehaviour
     public List<GameObject> retrieveTransform = new List<GameObject>();
     public List<GameObject> sendTransform = new List<GameObject>();
     
-    public bool CPRPlayer = true;
     public TextMeshProUGUI timerText;
-    	
+    
     // Start is called before the first frame update
     void Start()
     {
 		
         deviceName = SystemInfo.deviceName;
+        CPRPlayer = GameObject.Find("ConnectionManager").GetComponent<PlayerHandler>().CPRPlayer;
         
         timerText = GameObject.Find("TimerText").GetComponent<TextMeshProUGUI>();
      
