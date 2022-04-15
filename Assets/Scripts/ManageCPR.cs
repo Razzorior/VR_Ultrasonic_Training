@@ -105,7 +105,7 @@ public class ManageCPR : MonoBehaviour
         float defaultPosOfChest = chest.transform.localPosition.z;
         //float maxPress = 0f;
         float time_since_last_cpr_press = 0f;
-        float lastZPos = chest.transform.localPosition.z;
+        float lowestZPos = chest.transform.localPosition.z;
         bool alreadyRecognizedPress = false;
         //bool needs_reset = false;
         Queue<float> lastCPRPresses = new Queue<float>();
@@ -114,14 +114,14 @@ public class ManageCPR : MonoBehaviour
         {
             
             timePassedSinceLastCPRPress += Time.deltaTime;
-            if (lastZPos < chest.transform.localPosition.z && !alreadyRecognizedPress)
+            if (lowestZPos < (chest.transform.localPosition.z - 0.01f) && !alreadyRecognizedPress)
             {
                 Debug.Log("Recognized CPR Press");
                 lastCPRPresses.Enqueue(timePassedSinceLastCPRPress);
                 timePassedSinceLastCPRPress = 0f;
                 alreadyRecognizedPress = true;
             }
-            else if(lastZPos > chest.transform.localPosition.z && alreadyRecognizedPress)
+            else if(lowestZPos > chest.transform.localPosition.z && alreadyRecognizedPress)
             {
                 alreadyRecognizedPress = false;
             }
@@ -129,7 +129,14 @@ public class ManageCPR : MonoBehaviour
             { 
                 lastCPRPresses.Dequeue();
             }
-            lastZPos = chest.transform.localPosition.z;
+            if (lowestZPos > chest.transform.localPosition.z)
+            {
+                lowestZPos = chest.transform.localPosition.z;
+            }
+            else if (alreadyRecognizedPress)
+            {
+                lowestZPos = chest.transform.localPosition.z;
+            }
             
 
             float sum = 0;
@@ -140,7 +147,6 @@ public class ManageCPR : MonoBehaviour
 
             float timePassed = (sum + timePassedSinceLastCPRPress) / lastCPRPresses.Count;
             float newZPos = -(60 / timePassed - 110) * 0.002f;
-            Debug.Log(60 / timePassed);
             if(newZPos < -0.12f)
             {
                 newZPos = -0.12f;
