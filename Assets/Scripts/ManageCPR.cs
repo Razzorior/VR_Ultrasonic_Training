@@ -14,6 +14,7 @@ public class ManageCPR : MonoBehaviour
     public GameObject cPRHand;
     public GameObject otherHand;
     public GameObject chest;
+    public GameObject speedPointer;
 
     private Vector3 startingPos;
     //private Vector3 otherHandPosOffset = new Vector3();
@@ -62,6 +63,7 @@ public class ManageCPR : MonoBehaviour
     void Start()
     {
         startingPos = this.transform.position;
+        StartCoroutine(CPRPressSpeedAndDepthHandler());
     }
 
     // Update is called once per frame
@@ -98,21 +100,56 @@ public class ManageCPR : MonoBehaviour
         }
     }
 
-    IEnumerator CPRPressSpeedAndDepthHandler(float averageDuration)
+    IEnumerator CPRPressSpeedAndDepthHandler()
     {
-        float totalGameTimePassed = 0f;
         float defaultPosOfChest = chest.transform.localPosition.z;
-        float maxPress = 0f;
+        //float maxPress = 0f;
+        float time_since_last_cpr_press = 0f;
+        float lastZPos = chest.transform.localPosition.z;
+        bool alreadyRecognizedPress = false;
+        //bool needs_reset = false;
+        Queue<float> lastCPRPresses = new Queue<float>();
 
         while (true)
         {
-            totalGameTimePassed += Time.deltaTime;
-
-            if(currentlyApplyingCPR)
+            
+            timePassedSinceLastCPRPress += Time.deltaTime;
+            if (lastZPos < chest.transform.localPosition.z && !alreadyRecognizedPress)
             {
-                
+                Debug.Log("Recognized CPR Press");
+                lastCPRPresses.Enqueue(timePassedSinceLastCPRPress);
+                timePassedSinceLastCPRPress = 0f;
+                alreadyRecognizedPress = true;
+            }
+            else if(lastZPos > chest.transform.localPosition.z && alreadyRecognizedPress)
+            {
+                alreadyRecognizedPress = false;
+            }
+            while(lastCPRPresses.Count > 5)
+            { 
+                lastCPRPresses.Dequeue();
+            }
+            lastZPos = chest.transform.localPosition.z;
+            
+
+            float sum = 0;
+            foreach (float num in lastCPRPresses)
+            {
+                sum += num;
             }
 
+            float timePassed = (sum + timePassedSinceLastCPRPress) / lastCPRPresses.Count;
+            float newZPos = -(60 / timePassed - 110) * 0.002f;
+            Debug.Log(60 / timePassed);
+            if(newZPos < -0.12f)
+            {
+                newZPos = -0.12f;
+            }
+            else if (newZPos > 0.12f)
+            {
+                newZPos = 0.12f;
+            }
+            speedPointer.transform.localPosition = new Vector3 (speedPointer.transform.localPosition.x, speedPointer.transform.localPosition.y, newZPos);
             yield return null;
         }
     }

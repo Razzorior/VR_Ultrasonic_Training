@@ -3,12 +3,7 @@ guid: 1eaddfc595a303b4f8f9955ce5356e7c
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: LightBlue
-    second: {fileID: 2100000, guid: 406981998f1234442a4f2eb50cfe07e1, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
