@@ -98,6 +98,7 @@ public class Device_Connect : MonoBehaviour
            }
            json += ",\"timerText\":\"" + timerText.text + "\"";
            json += ",\"timerActive\":" + boolAsString;
+            Debug.Log("is cpr active " + boolAsString);
         }
         
         json += "}";

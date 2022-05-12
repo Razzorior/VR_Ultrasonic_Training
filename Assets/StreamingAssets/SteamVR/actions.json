@@ -18,7 +18,8 @@
     },
     {
       "name": "/actions/default/in/Pose",
-      "type": "pose"
+      "type": "pose",
+      "requirement": "mandatory"
     },
     {
       "name": "/actions/default/in/SkeletonLeftHand",
@@ -51,7 +52,8 @@
     },
     {
       "name": "/actions/default/in/calibrate",
-      "type": "boolean"
+      "type": "boolean",
+      "requirement": "mandatory"
     },
     {
       "name": "/actions/default/out/Haptic",
