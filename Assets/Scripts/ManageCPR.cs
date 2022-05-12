@@ -112,13 +112,13 @@ public class ManageCPR : MonoBehaviour
 
         while (true)
         {
-            
-            timePassedSinceLastCPRPress += Time.deltaTime;
+
+            time_since_last_cpr_press += Time.deltaTime;
             if (lowestZPos < (chest.transform.localPosition.z - 0.01f) && !alreadyRecognizedPress)
             {
                 Debug.Log("Recognized CPR Press");
-                lastCPRPresses.Enqueue(timePassedSinceLastCPRPress);
-                timePassedSinceLastCPRPress = 0f;
+                lastCPRPresses.Enqueue(time_since_last_cpr_press);
+                time_since_last_cpr_press = 0f;
                 alreadyRecognizedPress = true;
             }
             else if(lowestZPos > chest.transform.localPosition.z && alreadyRecognizedPress)
@@ -145,8 +145,9 @@ public class ManageCPR : MonoBehaviour
                 sum += num;
             }
 
-            float timePassed = (sum + timePassedSinceLastCPRPress) / lastCPRPresses.Count;
-            float newZPos = -(60 / timePassed - 110) * 0.002f;
+            float timePassed = (sum + time_since_last_cpr_press) / lastCPRPresses.Count;
+            Debug.Log(timePassed);
+            float newZPos = -(60 / timePassed - 105) * 0.002f;
             if(newZPos < -0.12f)
             {
                 newZPos = -0.12f;

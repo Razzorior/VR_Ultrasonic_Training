@@ -34,7 +34,7 @@ server.on('message', function(msg, senderInfo){
       let deviceName = message.device;
       
       if(message.timerText) timerText = message.timerText;
-      if(message.timerActive) timerActive = message.timerActive;
+      timerActive = message.timerActive ?? false;
       
       let array = message.objects;
       
@@ -57,10 +57,10 @@ server.on('listening', function(){
 });
 
 setInterval( () => {
-    console.log(data, timerText, timerActive)
+    //console.log(data, timerText, timerActive)
 }, 1000) 
 
 server.bind({
-	address: 'localhost',
+	address: '192.168.1.1',
 	port: 4000,
 });
