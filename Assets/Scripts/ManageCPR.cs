@@ -146,7 +146,6 @@ public class ManageCPR : MonoBehaviour
             }
 
             float timePassed = (sum + time_since_last_cpr_press) / lastCPRPresses.Count;
-            Debug.Log(timePassed);
             float newZPos = -(60 / timePassed - 105) * 0.002f;
             if(newZPos < -0.12f)
             {
