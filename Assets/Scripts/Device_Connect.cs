@@ -29,6 +29,7 @@ public class Device_Connect : MonoBehaviour
     string deviceName;
     bool CPRPlayer = true;
     AudioSource metronome;
+    AudioSource countdown;
     ManageCPR manageCPR;
 
     public String ipAdress = "127.0.0.1";
@@ -52,6 +53,7 @@ public class Device_Connect : MonoBehaviour
         
         manageCPR = GameObject.Find("riggedbareman:mixamorig:Spine2").GetComponent<ManageCPR>();
         metronome = manageCPR.metronome;
+        countdown = manageCPR.countdown;
         
         timerText = GameObject.Find("TimerText").GetComponent<TextMeshProUGUI>();
      
@@ -136,6 +138,17 @@ public class Device_Connect : MonoBehaviour
                 }
                 if(!CPRPlayer && metronome.isPlaying != list.timerActive && !metronome.isPlaying){
                     metronome.Play();
+                }
+                
+                int timerNumber = 9;
+                int.TryParse(list.timerText, out timerNumber);
+                
+                if(timerNumber == 4 && !countdown.isPlaying){
+                    countdown.Play();
+                }
+                
+                if(list.timerActive && countdown.isPlaying){
+                    countdown.Stop();
                 }
                 
                 foreach (PositionRotationJSON posRot in list.objects)
