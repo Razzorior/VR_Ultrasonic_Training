@@ -2,6 +2,7 @@ let data = {};
 let deviceList = [];
 let timerText = '';
 let timerActive = false;
+let deviceNameCPR = 'PC245-25';
 
 const dgram = require('dgram');
 const server = dgram.createSocket('udp4');
@@ -25,7 +26,7 @@ server.on('message', function(msg, senderInfo){
           server.send(sendMessage,senderInfo.port,senderInfo.address);
           
       } catch(e) {
-          console.log(e)
+          //console.log(e)
       }
 
   
@@ -33,8 +34,11 @@ server.on('message', function(msg, senderInfo){
       
       let deviceName = message.device;
       
+      if(deviceName === deviceNameCPR){
+          timerActive = message.timerActive ?? false;
+      }
+      
       if(message.timerText) timerText = message.timerText;
-      timerActive = message.timerActive ?? false;
       
       let array = message.objects;
       
