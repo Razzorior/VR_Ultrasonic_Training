@@ -58,3 +58,6 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# Some of imported Assets
+/Assets/Multi-User/Model/Avatar/**
+/Assets/Photon/**
